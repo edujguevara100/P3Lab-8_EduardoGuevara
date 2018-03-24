@@ -23,10 +23,10 @@ void pelea(Heroe*,Monstruo*);
 int mfigth();
 void elim(vector<Monstruo*>&);
 //void read(Heroe*&);
-//void write(Heroe*&);
+void write(Heroe*&);
 
 int main(){
-	Heroe* link = new Joven("Link",12,new Bomba("Rojo","Bomba"), 0, 0);
+	Heroe* link = new Joven("Link",12,new Bomba("Rojo","Bomba"), 0, 200);
 	//read(link);
 	vector<Monstruo*> monsters;
 	Monstruo* enem;
@@ -59,6 +59,7 @@ int main(){
 			case 4:
 				if(link->getDinero() >= 200){
 					link->setVidMax();
+					link->setVida(link->getVidMax());
 					link->setDinero(link->getDinero()-200);
 				}else{
 					cout<<"No tiene suficiente dinero"<<endl;
@@ -68,7 +69,7 @@ int main(){
 				elim(monsters);
 				break;
 			case 6:
-				//write(link);
+				write(link);
 				break;
 			default:
 				flag = 7;
@@ -77,22 +78,30 @@ int main(){
 	}
 	return 0;
 }
-/*
+
 void write(Heroe*& link){
 	int vida = link->getVida();
 	float dinero = link->getDinero();
 	int jefes = link->getJef();
 	int item;
-	if(dynamic_cast<char*>){
-
+	if(dynamic_cast<Bomba*>(link->getItem())){
+		item = 1;
+	}else if(dynamic_cast<Bumeran*>(link->getItem())){
+		item = 2;
+	}else{
+		item = 3;
 	}
 	ofstream out("Partida.zd",ios::binary);
-	out.write(reinterpret_cast<char*>(&size),sizeof(int));
-	out.write(reinterpret_cast<char*>(&jefes),sizeof(int));
-	out.write(reinterpret_cast<char*>(&dinero), sizeof(float));
+	if(out.is_open()){
+		out.write(reinterpret_cast<char*>(&vida),sizeof(int));
+		out.write(reinterpret_cast<char*>(&jefes),sizeof(int));
+		out.write(reinterpret_cast<char*>(&item),sizeof(int));
+		out.write(reinterpret_cast<char*>(&dinero), sizeof(float));
+		out.close();
+	}
 	
 }
-*/
+
 void elim(vector<Monstruo*>& monsters){
 	int op;
 	cout<<"Seleccione un monstruo para eliminar"<<endl;
