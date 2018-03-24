@@ -12,6 +12,7 @@
 #include "Arco.h"
 #include "Bumeran.h"
 #include <vector>
+#include <fstream>
 using namespace std;
 
 int menu();
@@ -20,13 +21,17 @@ Item* select();
 Monstruo* enemy(vector<Monstruo*>);
 void pelea(Heroe*,Monstruo*);
 int mfigth();
+void elim(vector<Monstruo*>&);
+//void read(Heroe*&);
+//void write(Heroe*&);
 
 int main(){
 	Heroe* link = new Joven("Link",12,new Bomba("Rojo","Bomba"), 0, 0);
+	//read(link);
 	vector<Monstruo*> monsters;
 	Monstruo* enem;
 	int flag = 0;
-	while(flag != 5){
+	while(flag != 7){
 		switch(flag = menu()){
 			case 1:
 				monsters.push_back(create());
@@ -59,16 +64,50 @@ int main(){
 					cout<<"No tiene suficiente dinero"<<endl;
 				}
 				break;
+			case 5:
+				elim(monsters);
+				break;
+			case 6:
+				//write(link);
+				break;
+			default:
+				flag = 7;
+				break;
 		}
 	}
 	return 0;
+}
+/*
+void write(Heroe*& link){
+	int vida = link->getVida();
+	float dinero = link->getDinero();
+	int jefes = link->getJef();
+	int item;
+	if(dynamic_cast<char*>){
+
+	}
+	ofstream out("Partida.zd",ios::binary);
+	out.write(reinterpret_cast<char*>(&size),sizeof(int));
+	out.write(reinterpret_cast<char*>(&jefes),sizeof(int));
+	out.write(reinterpret_cast<char*>(&dinero), sizeof(float));
+	
+}
+*/
+void elim(vector<Monstruo*>& monsters){
+	int op;
+	cout<<"Seleccione un monstruo para eliminar"<<endl;
+	for(int i = 0; i < monsters.size(); i++){
+		cout<<i<<" "<<monsters[i]->getNombre()<<endl;
+	}
+	cin>>op;
+	monsters.erase(monsters.begin()+op);
 }
 
 Monstruo* enemy(vector<Monstruo*> monsters){
 	int op;
 	cout<<"Seleccione un monstruo:"<<endl;
 	for(int i = 0; i < monsters.size(); i++){
-		cout<<i<<monsters[i]->getNombre()<<endl;
+		cout<<i<<" "<<monsters[i]->getNombre()<<endl;
 	}
 	cin>>op;
 	return monsters[op];
@@ -190,7 +229,9 @@ int menu(){
 		<<"2: Convetirse a Adulto o Joven"<<endl
 		<<"3: Pelear"<<endl
 		<<"4: Comprar corazones"<<endl
-		<<"5: Salir"<<endl;
+		<<"5: Eliminar Monstruo"<<endl
+		<<"6: Guardar Partida"<<endl
+		<<"7: Salir"<<endl;
 	cin>>op;
 	return op;
 }
