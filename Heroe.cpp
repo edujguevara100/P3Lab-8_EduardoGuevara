@@ -57,7 +57,7 @@ void Heroe::setItem(Item* i){
 }
 
 void Heroe::setJef(int j){
-	cantjef++;
+	cantjef = j;
 }
 
 int Heroe::getJef(){

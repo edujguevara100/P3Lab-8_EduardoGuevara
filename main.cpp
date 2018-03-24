@@ -22,12 +22,13 @@ Monstruo* enemy(vector<Monstruo*>);
 void pelea(Heroe*,Monstruo*);
 int mfigth();
 void elim(vector<Monstruo*>&);
-//void read(Heroe*&);
+void read(Heroe*&);
 void write(Heroe*&);
 
 int main(){
-	Heroe* link = new Joven("Link",12,new Bomba("Rojo","Bomba"), 0, 200);
-	//read(link);
+	Heroe* link = new Joven("Link",12,new Bomba("Rojo","Bomba"), 0, 2000);
+	read(link);
+	link->setDinero(2000);
 	vector<Monstruo*> monsters;
 	Monstruo* enem;
 	int flag = 0;
@@ -77,6 +78,28 @@ int main(){
 		}
 	}
 	return 0;
+}
+
+void read(Heroe*& link){
+	ifstream in("Partida.zd",ios::binary);
+	int vida;
+	in.read(reinterpret_cast<char*>(&vida),sizeof(int));
+	link->setVida(vida);
+	int jefes;
+	in.read(reinterpret_cast<char*>(&jefes),sizeof(int));
+	link->setJef(jefes);
+	int type;
+	in.read(reinterpret_cast<char*>(&type),sizeof(int));
+	if(type == 1){
+		link->setItem(new Bomba("Bomba","Bomba"));
+	}else if(type == 2){
+		link->setItem(new Bumeran("Bumeran","Bumeran"));
+	}else{
+		link->setItem(new Arco("Arco","Arco"));
+	}
+	float dinero;
+	in.read(reinterpret_cast<char*>(&dinero),sizeof(float));
+	link->setDinero(dinero);
 }
 
 void write(Heroe*& link){
@@ -173,7 +196,7 @@ void pelea(Heroe* link, Monstruo* enemy){
 		}else if(enemy->getVida() <= 0){
 			if(dynamic_cast<Jefe*>(enemy)){
 				link->setVidMax();
-				link->setJef(0);
+				link->setJef(link->getJef()+1);
 				link->refresh();
 			}else if(dynamic_cast<Semijefe*>(enemy)){
 				link->setDinero(link->getDinero()+100);
